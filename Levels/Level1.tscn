@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://c608hhjwjh51u"]
+
+[ext_resource type="TileSet" uid="uid://w2n3t074di2f" path="res://TileMap.tres" id="1_rhpjc"]
+[ext_resource type="Script" path="res://Player/Player.gd" id="2_7jtp6"]
+[ext_resource type="Texture2D" uid="uid://c3nvqgsbwhv3a" path="res://Sprites/Characters/character_0004.png" id="3_epfta"]
+[ext_resource type="PackedScene" uid="uid://c0m3ggwr8jo61" path="res://Enemy/Enemy.tscn" id="4_7560m"]
+[ext_resource type="Texture2D" uid="uid://bj4phc7ceh37p" path="res://Sprites/Objects/tile_0068.png" id="5_r8x5h"]
+[ext_resource type="Script" path="res://Levels/Spikes.gd" id="5_xmga1"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_28sfg"]
+height = 24.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2juy5"]
+size = Vector2(20, 10)
+
+[node name="Main" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("1_rhpjc")
+format = 2
+layer_0/tile_data = PackedInt32Array(65530, 65536, 1, 65531, 131072, 1, 65532, 131072, 1, 65533, 131072, 1, 65534, 131072, 1, 65535, 131072, 1, 0, 131072, 1, 1, 131072, 1, 2, 131072, 1, 3, 131072, 1, 4, 131072, 1, 5, 196608, 1, 131066, 65536, 7, 131067, 131072, 7, 131068, 131072, 7, 131069, 131072, 7, 131070, 131072, 7, 131071, 131072, 7, 65536, 131072, 7, 65537, 131072, 7, 65538, 131072, 7, 65539, 131072, 7, 65540, 131072, 7, 65541, 196608, 7, 9, 65536, 4, 12, 196608, 4, 10, 131072, 4, 11, 131072, 4, 15, 786432, 6, 16, 851968, 6, 17, 851968, 6, 18, 851968, 6, 19, 917504, 5, -65517, 851968, 4, -65516, 851968, 6, -65515, 851968, 6, -65514, 917504, 5, -131050, 983040, 4)
+
+[node name="Player" type="CharacterBody2D" parent="." groups=["Player"]]
+position = Vector2(0, -34)
+script = ExtResource("2_7jtp6")
+
+[node name="Sprite" type="Sprite2D" parent="Player"]
+texture = ExtResource("3_epfta")
+
+[node name="Collider" type="CollisionShape2D" parent="Player"]
+shape = SubResource("CapsuleShape2D_28sfg")
+
+[node name="Camera" type="Camera2D" parent="Player"]
+position = Vector2(0, 13)
+zoom = Vector2(3, 3)
+
+[node name="--- Enemies ---" type="Node" parent="."]
+
+[node name="Enemy1" parent="--- Enemies ---" instance=ExtResource("4_7560m")]
+position = Vector2(83, -25)
+
+[node name="Enemy2" parent="--- Enemies ---" instance=ExtResource("4_7560m")]
+position = Vector2(194, -25)
+
+[node name="Enemy3" parent="--- Enemies ---" instance=ExtResource("4_7560m")]
+position = Vector2(309, -25)
+
+[node name="Enemy4" parent="--- Enemies ---" instance=ExtResource("4_7560m")]
+position = Vector2(405, -50)
+move_direction = Vector2(-50, 0)
+
+[node name="Spikes" type="Area2D" parent="."]
+position = Vector2(39, -9)
+script = ExtResource("5_xmga1")
+
+[node name="Sprite" type="Sprite2D" parent="Spikes"]
+texture = ExtResource("5_r8x5h")
+
+[node name="Collider" type="CollisionShape2D" parent="Spikes"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_2juy5")
+
+[connection signal="body_entered" from="Spikes" to="Spikes" method="_on_body_entered"]
