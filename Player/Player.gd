@@ -1,8 +1,12 @@
 extends CharacterBody2D
 
+@onready var score_text_label: Label = get_node("CanvasLayer/ScoreText")
+
 var move_speed: float = 100.0
 var jump_force: float = 200.0
 var gravity: float = 500.0
+
+var score: int = 0
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -22,6 +26,10 @@ func _physics_process(delta: float) -> void:
 
 	if global_position.y >= 100:
 		game_over()
+
+func add_score(amount: int):
+	score += amount
+	score_text_label.text = str("Score: ", score)
 
 func game_over():
 	get_tree().reload_current_scene()
